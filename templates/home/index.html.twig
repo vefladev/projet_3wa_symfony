@@ -20,15 +20,17 @@
 							Bienvenue dans la Burning Zone !
 						</h2>
 						{# <a href="{{ url('presentation') }}" class="btn" id="homebouton">
-													<strong>EN SAVOIR &nbsp;<i class="fas fa-plus"></i>
-													</strong>
-												</a><br>
-												<a href="{{ url('news') }}" class="btn btn-outline-danger">
-													<strong>NEWS</strong>
-												</a><br>
-												<a href="{{ url('home_admin_index') }}" class="btn" id="homebouton">
-													<strong>Mon Espace</strong>
-												</a> #}
+																									<strong>EN SAVOIR &nbsp;<i class="fas fa-plus"></i>
+																									</strong>
+																								</a><br>
+																								<a href="{{ url('news') }}" class="btn btn-outline-danger">
+																									<strong>NEWS</strong>
+																								</a><br>#}
+						{% if app.user %}
+							<a href="{{ url('home_admin_index') }}" class="btn" id="homebouton">
+								<strong>Mon Espace</strong>
+							</a>
+						{% endif %}
 					</div>
 				</div>
 

@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+
+	<body id="adminBody">
+		<div class="container">
+			<div class="col-12" id="adminHome">
+
+
+				<h1 style="margin-bottom: 25px;">
+					Bonjour
+					{{app.user.prenom}}
+					{{app.user.nom}}
+					<h1>
+						<h2 style="margin-bottom: 25px;">
+							Bienvenue dans l'espace Adhérents
+						</h2>
+						<h3>
+							<a href="{{ path('show_user',{id: app.user.id}) }}">Mon profil</a>
+						</h3>
+						<h3>
+							{# {% for training in app.user.trainings %} #}
+							<a href="{{ path('index_training_user', {'id': app.user.id}) }}">Mes entrainements</a>
+							{# {% endfor %} #}
+						</h3>
+
+
+					</div>
+				</div>
+
+			</body>
+
+		{% endblock %}

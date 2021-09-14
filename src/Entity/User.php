@@ -2,23 +2,23 @@
 
 namespace App\Entity;
 
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @ORM\Id
+     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -39,34 +39,16 @@ class User implements UserInterface
      */
     private $password;
 
-
-    // /**
-    //  * NOTE: This is not a mapped field of entity metadata, just a simple property.
-    //  * 
-    //  * @Vich\UploadableField(mapping="user_image", fileNameProperty="imageName")
-    //  * 
-    //  * @var File|null
-    //  */
-    // private $imageFile;
-
     /**
-     * @ORM\Column(type="string")
-     *
-     * @var string|null
-     */
-    private $imageName;
-
-
-
-    /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=30)
      */
     private $nom;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=40)
      */
     private $prenom;
+
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -74,82 +56,36 @@ class User implements UserInterface
     private $adresse;
 
     /**
-     * @ORM\Column(type="string", length=13, nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $telephone;
 
     /**
      * @ORM\Column(type="date")
-     * @var \DateTimeInterface|null
      */
-    private $DateDeNaissance;
-
-    /**
-     * @ORM\Column(type="datetime")
-     * @var \DateTimeInterface|null
-     */
-    private $createdAt;
+    private $date_de_naissance;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $updatedAt;
+    private $created_at;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Training", mappedBy="coach")
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updated_at;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Training::class, mappedBy="users")
      */
     private $trainings;
 
 
-
-
-
-    /**
-     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
-     * of 'UploadedFile' is injected into this setter to trigger the update. If this
-     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
-     * must be able to accept an instance of 'File' as the bundle will inject one here
-     * during Doctrine hydration.
-     *
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
-     */
-    public function setImageFile(?File $imageFile = null): void
-    {
-        $this->imageFile = $imageFile;
-
-        if (null !== $imageFile) {
-            // It is required that at least one field changes if you are using doctrine
-            // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTimeImmutable();
-        }
-    }
-
-    public function getImageFile(): ?File
-    {
-        return $this->imageFile;
-    }
-
-    public function setImageName(?string $imageName): self
-    {
-        $this->imageName = $imageName;
-        return $this;
-    }
-
-    public function getImageName(): ?string
-    {
-        return $this->imageName;
-    }
-
-
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
-        $this->updatedAt = new \DateTime();
         $this->trainings = new ArrayCollection();
-        $this->users = new ArrayCollection();
-        $this->coachTrainings = new ArrayCollection();
-        $this->userTraining = new ArrayCollection();
-        $this->Training = new ArrayCollection();
+        $this->created_at = new \DateTime();
+        $this->updated_at = new \DateTime();
     }
 
     public function getId(): ?int
@@ -174,6 +110,14 @@ class User implements UserInterface
      *
      * @see UserInterface
      */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * @deprecated since Symfony 5.3, use getUserIdentifier instead
+     */
     public function getUsername(): string
     {
         return (string) $this->email;
@@ -188,6 +132,7 @@ class User implements UserInterface
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
+
         return array_unique($roles);
     }
 
@@ -199,11 +144,11 @@ class User implements UserInterface
     }
 
     /**
-     * @see UserInterface
+     * @see PasswordAuthenticatedUserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return $this->password;
     }
 
     public function setPassword(string $password): self
@@ -214,11 +159,14 @@ class User implements UserInterface
     }
 
     /**
+     * Returning a salt is only needed, if you are not using a modern
+     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
+     *
      * @see UserInterface
      */
-    public function getSalt()
+    public function getSalt(): ?string
     {
-        // not needed when using the "bcrypt" algorithm in security.yaml
+        return null;
     }
 
     /**
@@ -229,7 +177,6 @@ class User implements UserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
-
 
     public function getNom(): ?string
     {
@@ -260,19 +207,19 @@ class User implements UserInterface
         return $this->adresse;
     }
 
-    public function setAdresse(?string $adresse): self
+    public function setAdresse(string $adresse): self
     {
         $this->adresse = $adresse;
 
         return $this;
     }
 
-    public function getTelephone(): ?string
+    public function getTelephone(): ?int
     {
         return $this->telephone;
     }
 
-    public function setTelephone(?string $telephone): self
+    public function setTelephone(int $telephone): self
     {
         $this->telephone = $telephone;
 
@@ -281,71 +228,69 @@ class User implements UserInterface
 
     public function getDateDeNaissance(): ?\DateTimeInterface
     {
-        return $this->DateDeNaissance;
+        return $this->date_de_naissance;
     }
 
-    public function setDateDeNaissance(\DateTimeInterface $DateDeNaissance): self
+    public function setDateDeNaissance(\DateTimeInterface $date_de_naissance): self
     {
-        $this->DateDeNaissance = $DateDeNaissance;
+        $this->date_de_naissance = $date_de_naissance;
 
         return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->createdAt;
+        return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt(\DateTimeInterface $created_at): self
     {
-        $this->createdAt = $createdAt;
+        $this->created_at = $created_at;
 
         return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->updatedAt;
+        return $this->updated_at;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(\DateTimeInterface $updated_at): self
     {
-        $this->updatedAt = $updatedAt;
+        $this->updated_at = $updated_at;
 
         return $this;
     }
 
-    // /**
-    //  * @return Collection|Training[]
-    //  */
-    // public function getTrainings(): Collection
-    // {
-    //     return $this->trainings;
-    // }
+    public function __toString(): string
+    {
+        return $this->nom . ' ' . $this->prenom;
+    }
 
-    // public function addTraining(Training $training): self
-    // {
-    //     if (!$this->trainings->contains($training)) {
-    //         $this->trainings[] = $training;
-    //         $training->setCoach($this);
-    //     }
+    /**
+     * @return Collection|Training[]
+     */
+    public function getTrainings(): Collection
+    {
+        return $this->trainings;
+    }
 
-    //     return $this;
-    // }
+    public function addTraining(Training $training): self
+    {
+        if (!$this->trainings->contains($training)) {
+            $this->trainings[] = $training;
+            $training->addUser($this);
+        }
 
-    // public function removeTraining(Training $training): self
-    // {
-    //     if ($this->trainings->contains($training)) {
-    //         $this->trainings->removeElement($training);
-    //         // set the owning side to null (unless already changed)
-    //         if ($training->getCoach() === $this) {
-    //             $training->setCoach(null);
-    //         }
-    //     }
+        return $this;
+    }
 
-    //     return $this;
-    // }
+    public function removeTraining(Training $training): self
+    {
+        if ($this->trainings->removeElement($training)) {
+            $training->removeUser($this);
+        }
 
-
-
+        return $this;
+    }
 }

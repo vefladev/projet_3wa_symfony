@@ -3,11 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\User;
-// use App\Form\UserType;
+use App\Form\UserType;
+use App\Entity\Training;
 use App\Repository\UserRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\TrainingRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 class HomeController extends AbstractController
@@ -29,14 +33,13 @@ class HomeController extends AbstractController
     public function adminIndex()
     {
 
-        // if($this->isGranted('ROLE_ADMIN')){
-        //     return $this->redirectToRoute('home_admin');
-        // }else if($this->isGranted('ROLE_COACH')){
-        //     return $this->redirectToRoute('home_coach');
-        // }else if($this->isGranted('ROLE_USER')){
-        //     return $this->redirectToRoute('home_adherent');
-
-        // }
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('home_admin');
+        } else if ($this->isGranted('ROLE_COACH')) {
+            return $this->redirectToRoute('home_coach');
+        } else if ($this->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('home_adherent');
+        }
     }
 
     /**
@@ -62,11 +65,45 @@ class HomeController extends AbstractController
 
 
     /**
-     * @Route("/admin/adherent", name="home_adherent")
-     * @IsGranted("ROLE_USER")
+     * @Route("/adherent", name="home_adherent")
      */
     public function adherent()
     {
         return $this->render('home/adherent.html.twig', []);
+    }
+
+    /**
+     * @Route("/adherent/{id}", name="show_user", methods={"GET"})
+     * @IsGranted("ROLE_USER")
+     */
+    public function show(User $user): Response
+    {
+        return $this->render('user/show.html.twig', [
+            'user' => $user,
+        ]);
+    }
+
+    /**
+     * @Route("/adherent/training/{id}", name="index_training_user", methods={"GET"})
+     * @IsGranted("ROLE_USER")
+     */
+    public function indexTrainingUser(TrainingRepository $trainingRepository, Request $request): Response
+    {
+
+        return $this->render('user/show_training.html.twig', [
+            'trainings' => $trainingRepository->findAll()
+            // 'pagination' => $paginator,
+        ]);
+    }
+
+    /**
+     * @Route("/adherent/training/show/{id}", name="show_user_training", methods={"GET"})
+     * @IsGranted("ROLE_USER")
+     */
+    public function showTrainingUser(Training $training): Response
+    {
+        return $this->render('training/show.html.twig', [
+            'training' => $training,
+        ]);
     }
 }

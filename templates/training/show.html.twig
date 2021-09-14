@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Entraînement
+{% endblock %}
+
+{% block body %}
+
+	<div class="container-fluid mb-3">
+		<a href="{{ path('home_training_index', {'id': app.user.id}) }}">
+			<button type="submit" class="btn btn-danger btn-sm rounded">
+				<i class="fas fa-caret-left"></i>
+				Retour
+			</button>
+		</a>
+	</div>
+
+	<div class="card primary" style="max-width: 50rem;">
+		<div class="card-header d-flex justify-content-between">
+			<h1 style="margin-top: 40px">{{ training.nom }}</h1>
+		</div>
+		<div class="card-body" style="margin-top:-20px">
+			<table class="table">
+				<tbody>
+					<tr>
+						<th>Référence du cours</th>
+						<td>{{ training.id }}</td>
+					</tr>
+					<tr>
+						<th>Date et heure du cours</th>
+						<td>{{ training.date ? training.date|date('d/m/Y H:i') : '' }}</td>
+					</tr>
+					{% if training.coach %}
+						<tr>
+							<th>Coach</th>
+							<td>{{ training.coach }}</td>
+						</tr>
+					{% endif %}
+					{% if is_granted('ROLE_COACH') %}
+						<tr>
+							<th>Participant(s)</th>
+							<td>
+								{% for user in training.users %}
+									<a href="{{ path('user_show',{id: user.id}) }}">
+										{{ user.prenom }}
+										{{ user.nom }}<br/>
+									</a>
+								{% endfor %}
+							</td>
+						</tr>
+					{% endif %}
+				</tbody>
+			</tbody>
+		</tr>
+	</tbody>
+</table></div></div><a href="{{ path('training_index') }}">back to list</a><a href="{{ path('training_edit', {'id': training.id}) }}">edit</a>{{ include('training/_delete_form.html.twig') }}{% endblock %}
