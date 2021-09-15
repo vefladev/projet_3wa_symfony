@@ -31,7 +31,6 @@ class HomeController extends AbstractController
      */
     public function adminIndex()
     {
-
         if ($this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('home_admin');
         } else if ($this->isGranted('ROLE_COACH')) {

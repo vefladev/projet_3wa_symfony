@@ -34,8 +34,8 @@ class TrainingController extends AbstractController
         //     1 // Nombre de résultats par page
         // );
         return $this->render('training/index.html.twig', [
-            'trainings' => $trainingRepository->findAll()
-            // 'pagination' => $paginator,
+            'trainings' => $trainingRepository->findBy(array(), array('date' => 'ASC'))
+            // 'pagination' => $paginator,$users = $repo->findBy(array(), array('nom' => 'ASC'));
         ]);
     }
 
