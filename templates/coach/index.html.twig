@@ -4,16 +4,6 @@
 {% endblock %}
 
 {% block body %}
-
-	{# <div class="d-flex justify-content-between mb-2">
-																		<a href="{{ path('home_coach')}}" class="btn btn-danger">
-																			<i class="fas fa-caret-left"></i>
-																			Retour Espace Coaching</a>
-																		<a href="{{ path('training_new') }}" class="btn btn-info">Créer une nouvelle seance de Coaching
-																			<i class="far fa-calendar-plus"></i>
-																		</a>
-																	</div> #}
-
 	<h1>Coachs</h1>
 
 	<table class="table table-active table-hover">
@@ -22,26 +12,18 @@
 				<th scope="col">N°</th>
 				<th scope="col">Nom</th>
 				<th scope="col">Prénom</th>
-				{# <th scope="col">Adhérent</th> #}
-				{# <th scope="col">Date</th>
-																					<th scope="col">Actions</th> #}
 			</tr>
 		</thead>
 		<tbody>
 			<tr class="table table-light">
 				<td>{{ coach.id }}</td>
 				<td>
-					{# <a href="{{ path('training_show',{id: training.id}) }}"> #}
 					<strong>{{ coach.nom }}</a>
+				</td>
+				<td>
+					<strong>{{ coach.prenom }}</a>
 				</td>
 			</tr>
 		</tbody>
-	</td>
-</tr></tbody></tr></tbody></strong></td><td><strong>{{ coach.prenom}}</strong></td>{#<td>
-																					<a href="{{ path('training_edit', {'id': training.id}) }}">
-																						<button type="submit" class="btn btn-info btn-sm rounded mb-2">
-																							<i class="fas fa-edit"></i>
-																						</button>
-																					</a>
-															
-																					{{ include('training/_delete_form.html.twig') }}</td> #}</tr></tbody></tbody></tr> {% endblock %}
+	</table>
+{% endblock %}

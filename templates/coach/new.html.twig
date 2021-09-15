@@ -5,7 +5,11 @@
 
 {% block body %}
 
-	{# <a class="btn btn-primary mb-2" href="{{ path('training_index') }}">Retour à la liste</a> #}
+	<div class="d-flex justify-content-between mb-2">
+		<a href="{{ path('home_admin_index')}}" class="btn btn-danger">
+			<i class="fas fa-caret-left"></i>
+			Retour</a>
+	</div>
 	<h1>Créer un nouveau coach</h1>
 	{{ include('coach/_form.html.twig') }}
 

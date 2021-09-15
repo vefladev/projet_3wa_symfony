@@ -11,21 +11,12 @@
 
 				<div class="row" style="padding-top: 250px; text-align: center;" id="home-page">
 					<div class="col-12 m-6px" id="homeb">
-						<blockquote>
-							{# {{ edito|raw }} #}
-						</blockquote>
+						<blockquote></blockquote>
 						<h2>
 							Prêts à transpirer ?
 							<br>
 							Bienvenue dans la Burning Zone !
 						</h2>
-						{# <a href="{{ url('presentation') }}" class="btn" id="homebouton">
-																									<strong>EN SAVOIR &nbsp;<i class="fas fa-plus"></i>
-																									</strong>
-																								</a><br>
-																								<a href="{{ url('news') }}" class="btn btn-outline-danger">
-																									<strong>NEWS</strong>
-																								</a><br>#}
 						{% if app.user %}
 							<a href="{{ url('home_admin_index') }}" class="btn" id="homebouton">
 								<strong>Mon Espace</strong>

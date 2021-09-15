@@ -32,16 +32,6 @@ class RegistrationFormType extends AbstractType
             ->add('email')
             ->add('nom', TextType::class)
             ->add('prenom',  TextType::class)
-            // ->add('imageFile',VichImageType::class,['required'=>true])
-            // ->add('roles', ChoiceType::class, [
-            //     'choices' => [
-            //         'Adherent' => 'ROLE_USER',
-            //         'Coach' => 'ROLE_COACH',
-            //     ],
-            //     'expanded' => true,
-            //     'multiple' => true,
-            //     'label' => 'Rôles',
-            // ])
             ->add('DateDeNaissance', BirthdayType::class, [
                 'format' => 'dd/MM/yyyy',
             ])

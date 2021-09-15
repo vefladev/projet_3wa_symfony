@@ -5,7 +5,6 @@ namespace App\Form;
 use App\Entity\User;
 use App\Entity\Coach;
 use App\Entity\Training;
-use App\Form\SearcheableEntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -41,15 +40,7 @@ class TrainingType extends AbstractType
                 'label' => 'Adhérent(s)',
                 'multiple' => true,
                 'class' => User::class,
-                // 'search' => $this->url->generate('users'),
-                // 'label_property' => 'nom',
-                // 'value_property' => 'id',
             ]);
-        // ->add('users', EntityType::class, [
-        //     'label' => 'Adhérent(s)',
-        //     'multiple' => true,
-        //     'class' => User::class,
-        // ]);
     }
 
 

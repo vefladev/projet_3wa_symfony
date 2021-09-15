@@ -7,36 +7,45 @@
 	<body id="adminBody">
 		<div class="container">
 			<div class="col-12" id="adminHome">
-				<h1 style="text-align : center; margin-bottom : 60px;">
-					Bienvenue dans l'espace Coaching<h1>
-						<h1 style="text-align : center; margin-bottom : 70px;">
-							Bonjour Coach
-							{% if app.user %}
-								{{ app.user.prenom|capitalize }}
-								{{ app.user.nom|upper }}
-							{% endif %}
-						</h1>
-						<div class="d-flex justify-content-center mb-4 mt-4">
-							<a href="{{ path('training_index') }}" class="btn btn-lg btn-danger">
-								<strong>
-									<i class="fas fa-caret-right"></i>
-									TOUS LES ENTRAINEMENTS
-									<i class="fas fa-dumbbell"></i>
-								</strong>
-							</a>
-						</div>
-						<div class="d-flex justify-content-center mb-4 mt-4">
-							<a href="{{ path('training_new') }}" class="btn btn-lg btn-success">
-								<strong>
-									<i class="fas fa-caret-right"></i>
-									AJOUTER UN COURS
-									<i class="far fa-calendar-plus"></i>
-								</strong>
-							</a>
-							<br>
-						</div>
+				<div class="d-flex justify-content-between mb-2">
+					<a href="{{ path('home_admin_index')}}" class="btn btn-danger">
+						<i class="fas fa-caret-left"></i>
+						Retour</a>
+				</div>
+				<h1 style="text-align:center;">
+					<strong>
+						Bienvenue dans l'espace Administrateur
+					</strong>
+				</h1>
+				<h2 style="text-align:center; margin-top: 70px; margin-bottom: 70px;">
+					<strong>
+						Bonjour
+						{% if app.user %}
+							{{ app.user.prenom|capitalize }}
+							{{ app.user.nom|upper }}
+						{% endif %}
+					</strong>
+				</h2>
+				<div style="text-align: center; margin-bottom: -100px;" id="listingCoach">
+					<div>
+						<a href="{{ path('training_index')}}">
+							<h3>
+								<i class="fas fa-caret-right"></i>
+								<strong>Tout les entraînements</strong>
+							</h3>
+						</a>
+					</div>
+					<div>
+						<a href="{{ path('training_new')}}">
+							<h3>
+								<i class="fas fa-caret-right"></i>
+								<strong>Ajouter un cours</strong>
+							</h3>
+						</a>
 					</div>
 				</div>
-			</body>
+			</div>
+		</div>
+	</body>
 
-		{% endblock %}
+{% endblock %}

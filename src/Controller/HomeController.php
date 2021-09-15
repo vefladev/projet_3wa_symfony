@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\UserType;
 use App\Entity\Training;
 use App\Repository\UserRepository;
 use App\Repository\TrainingRepository;

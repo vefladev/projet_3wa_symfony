@@ -31,40 +31,11 @@ class UserType extends AbstractType
                 'mapped' => false,
                 'required' => false
             ])
-            // ->add('imageFile',VichImageType::class,['required'=>true])
-            // ->add('roles', ChoiceType::class, [
-            //     'choices' => [
-            //         'Adherent' => 'ROLE_USER',
-            //         'Coach' => 'ROLE_COACH',
-            //         'Administrateur' => 'ROLE_ADMIN'
-            //     ],
-            //     'expanded' => true,
-            //     'multiple' => true,
-            //     'label' => 'Rôles'
-            // ])
             ->add('DateDeNaissance', BirthdayType::class, [
                 'format' => 'dd/MM/yyyy',
             ])
             ->add('adresse', TextType::class)
-            ->add('telephone', TextType::class)
-
-            // ->add('plainPassword', PasswordType::class, [
-            //     // instead of being set onto the object directly,
-            //     // this is read and encoded in the controller
-            //     'mapped' => false,
-            //     'constraints' => [
-            //         new NotBlank([
-            //             'message' => 'Please enter a password',
-            //         ]),
-            //         new Length([
-            //             'min' => 6,
-            //             'minMessage' => 'Your password should be at least {{ limit }} characters',
-            //             // max length allowed by Symfony for security reasons
-            //             'max' => 4096,
-            //         ]),
-            //     ],
-            // ])
-        ;
+            ->add('telephone', TextType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

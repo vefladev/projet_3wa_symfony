@@ -20,14 +20,13 @@
 			<th scope="col">N°</th>
 			<th scope="col">Cours</th>
 			<th scope="col">Coach</th>
-			{# <th scope="col">Adhérent</th> #}
 			<th scope="col">Date</th>
-			<th scope="col">Annuler</th>
+			{# <th scope="col">Annuler</th> #}
 		</tr>
 	</thead>
 	<tbody>
-		{% for training in app.user.trainings %}
-			<tr class="table table-light">
+		<tr class="table table-light">
+			{% for training in app.user.trainings %}
 				<td>{{ training.id }}</td>
 				<td>
 					<a href="{{ path('show_user_training',{id: training.id}) }}">
@@ -40,22 +39,17 @@
 				<td>
 					<strong>{{ training.date ? training.date|date('d/m/Y H:i') : '' }}</strong>
 				</td>
-				<td>
-					{# <a href="{{ path('training_edit', {'id': training.id}) }}">
-																																																																		<button type="submit" class="btn btn-info btn-sm rounded mb-2">
-																																																																			<i class="fas fa-edit"></i>
-																																																																		</button>
-																																																																	</a> #}
-
-					{{ include('training/_delete_form.html.twig') }}</td>
-			</tr>
-		</tbody>
+				{# <td>
+																		<a href="{{ path('training_user_delete', {'id': training.id}) }}">
+																			<button type="submit" class="btn btn-info btn-sm rounded mb-2">
+																				<i class="fas fa-edit"></i>
+																			</button>
+																		</a>
+																		{# {{ include('training/_delete_form.html.twig') }}</td> #}
+			</td>
+		</tr>
 	</tbody>
-</tr>
-{# {% else %}
-																																																																																																																																																																									            <tr>
-																																																																																																																																																																									                <td colspan="5">no records found</td>
-																																																																																																																																																																									            </tr> #}{% endfor %}</tbody></table></div>{# 
-																															    <div id="paginationTraining">
-																															{{ knp_pagination_render(trainings)}}
-																															</div> #}{% endblock %}
+</tr></tbody>{% endfor %}</table>{# 
+					<div id="paginationTraining">
+				{{ knp_pagination_render(trainings)}}
+				</div> #}{% endblock %}

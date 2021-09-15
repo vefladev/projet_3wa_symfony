@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Training;
+use App\Entity\User;
 use App\Form\TrainingType;
 use App\Repository\TrainingRepository;
 use Knp\Component\Pager\PaginatorInterface;
@@ -85,7 +86,7 @@ class TrainingController extends AbstractController
     }
 
     /**
-     * @Route("training/{id}", name="training_show", methods={"GET"})
+     * @Route("/training/{id}", name="training_show", methods={"GET"})
      */
     public function show(Training $training): Response
     {
@@ -115,7 +116,7 @@ class TrainingController extends AbstractController
     }
 
     /**
-     * @Route("training/{id}", name="training_delete", methods={"DELETE"})
+     * @Route("/training/{id}", name="training_delete", methods={"POST","DELETE"})
      */
     public function delete(Request $request, Training $training): Response
     {
@@ -126,5 +127,24 @@ class TrainingController extends AbstractController
         }
 
         return $this->redirectToRoute('training_index');
+    }
+
+    /**
+     * @Route("/training/delete_user/{id}", name="training_user_delete", methods={"DELETE"})
+     * @IsGranted("ROLE_USER")
+     */
+    public function deleteTraining(Request $request, User $user): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
+            $this->addFlash(
+                'success',
+                'Votre participation a bien été annulé'
+            );
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($user);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('home_adherent');
     }
 }
