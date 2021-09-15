@@ -80,12 +80,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $trainings;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Images::class, mappedBy="users", cascade={"persist"})
+     */
+    private $images;
+
 
     public function __construct()
     {
         $this->trainings = new ArrayCollection();
         $this->created_at = new \DateTime();
         $this->updated_at = new \DateTime();
+        $this->images = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -289,6 +295,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->trainings->removeElement($training)) {
             $training->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Images[]
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Images $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+            $image->setUsers($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Images $image): self
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getUsers() === $this) {
+                $image->setUsers(null);
+            }
         }
 
         return $this;

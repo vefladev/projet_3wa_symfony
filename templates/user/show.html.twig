@@ -26,7 +26,17 @@
 		<table class="table">
 			<tbody>
 				<tr>
-					<th>Id</th>
+					{# Si la route est "user_show on affiche les images #}
+					{% if app.request.attributes.get('_route') == 'user_show' %}
+						{% for image in user.images %}
+							<div>
+								<img src="{{ asset('/uploads/'~image.name) }}" alt="" width="150">
+							</div>
+						{% endfor %}
+					{% endif %}
+				</tr>
+				<tr>
+					<th>Référence client</th>
 					<td>{{ user.id }}</td>
 				</tr>
 				<tr>
@@ -81,36 +91,33 @@
 		</td>
 	</tr>
 	{# <tr>
-																									<th>Crée le:</th>
-																									<td>{{ user.createdAt ? user.createdAt|date('d/m/Y H:i:s') : '' }}</td>
-																									</tr>
-																									<tr>
-																									<th>Modifié le:</th>
-																									<td>{{ user.updatedAt ? user.updatedAt|date('d/m/Y H:i:s') : '' }}</td>
-																									</tr> #}
+																																<th>Crée le:</th>
+																																<td>{{ user.createdAt ? user.createdAt|date('d/m/Y H:i:s') : '' }}</td>
+																																</tr>
+																																<tr>
+																																<th>Modifié le:</th>
+																																<td>{{ user.updatedAt ? user.updatedAt|date('d/m/Y H:i:s') : '' }}</td>
+																																</tr> #}
 	{# <tr>
-																									<th>Roles</th>
-																									
-																									<td>
-																									<strong>
-																									{% for role in user.roles %}
-																									{% if role == 'ROLE_ADMIN' %}
-																									Administrateur
-																									{% endif %}
-																									
-																									{% if role == 'ROLE_COACH' %}
-																									Coach
-																									{% endif %}
-																									
-																									{% if role == 'ROLE_USER' %}
-																									Adhérent
-																									{% endif %}
-																									{% endfor %}
-																									</strong>
-																									</td>
-																									</tr> #}
-</tbody></table></div></div>{% if is_granted('ROLE_ADMIN') %}<div class="container mb-3 mr-3 mt-3"><a href="{{ path('admin_showUser') }}">
-<button type="submit" class="btn btn-danger btn-sm rounded">
-	<i class="fas fa-caret-left"></i>
-	Retour à la liste</button></a></a><a href="{{ path('user_edit', {'id': user.id}) }}"><button type="submit" class="btn btn-info btn-sm rounded">
+																																<th>Roles</th>
+																																
+																																<td>
+																																<strong>
+																																{% for role in user.roles %}
+																																{% if role == 'ROLE_ADMIN' %}
+																																Administrateur
+																																{% endif %}
+																																
+																																{% if role == 'ROLE_COACH' %}
+																																Coach
+																																{% endif %}
+																																
+																																{% if role == 'ROLE_USER' %}
+																																Adhérent
+																																{% endif %}
+																																{% endfor %}
+																																</strong>
+																																</td>
+																																</tr> #}
+</tbody></table></div></div>{% if is_granted('ROLE_ADMIN') %}<div class="container mb-3 mr-3 mt-3"></a><a href="{{ path('user_edit', {'id': user.id}) }}"><button type="submit" class="btn btn-info btn-sm rounded">
 <i class="fas fa-edit"></i>Modifier</button></a></div><div class="container mt-3">{{ include('user/_delete_form.html.twig') }}</div>{% endif %}{% endblock %}

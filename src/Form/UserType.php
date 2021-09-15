@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -24,17 +25,23 @@ class UserType extends AbstractType
             ->add('email')
             ->add('prenom',  TextType::class)
             ->add('nom', TextType::class)
-            // ->add('imageFile',VichImageType::class,['required'=>true])
-            ->add('roles', ChoiceType::class, [
-                'choices' => [
-                    'Adherent' => 'ROLE_USER',
-                    'Coach' => 'ROLE_COACH',
-                    'Administrateur' => 'ROLE_ADMIN'
-                ],
-                'expanded' => true,
+            ->add('images', FileType::class, [
+                'label' => 'Photo',
                 'multiple' => true,
-                'label' => 'Rôles'
+                'mapped' => false,
+                'required' => false
             ])
+            // ->add('imageFile',VichImageType::class,['required'=>true])
+            // ->add('roles', ChoiceType::class, [
+            //     'choices' => [
+            //         'Adherent' => 'ROLE_USER',
+            //         'Coach' => 'ROLE_COACH',
+            //         'Administrateur' => 'ROLE_ADMIN'
+            //     ],
+            //     'expanded' => true,
+            //     'multiple' => true,
+            //     'label' => 'Rôles'
+            // ])
             ->add('DateDeNaissance', BirthdayType::class, [
                 'format' => 'dd/MM/yyyy',
             ])
