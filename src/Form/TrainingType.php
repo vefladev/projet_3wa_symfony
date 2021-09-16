@@ -27,10 +27,8 @@ class TrainingType extends AbstractType
             ->add('nom', TextType::class, [
                 'label' => 'Nom du cours :',
             ])
-
             ->add('date', DateTimeType::class, [
                 'label' => 'Débute à :',
-                // 'format' => 'dd/MM/yyyy H:i',
             ])
             ->add('coach', EntityType::class, [
                 'label' => 'Coach',
@@ -42,7 +40,6 @@ class TrainingType extends AbstractType
                 'class' => User::class,
             ]);
     }
-
 
     public function configureOptions(OptionsResolver $resolver)
     {

@@ -76,7 +76,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $updated_at;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Training::class, mappedBy="users")
+     * @ORM\ManyToMany(targetEntity=Training::class, mappedBy="users", cascade={"persist"})
      */
     private $trainings;
 

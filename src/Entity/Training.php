@@ -47,7 +47,7 @@ class Training
     private $coach;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="trainings")
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="trainings", cascade={"persist"})
      */
     private $users;
 
