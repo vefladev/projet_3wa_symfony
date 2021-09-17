@@ -35,6 +35,7 @@ class UserFixtures extends Fixture
             ->setNom('wils')
             ->setDateDeNaissance(new \DateTime('2021-09-12'))
             ->setRoles(['ROLE_ADMIN'])
+            // ->setImageName('ROLE_ADMIN')
             ->setCreatedAt(new \DateTime());
         $manager->persist($user);
 
